@@ -42,7 +42,7 @@ public class AuthorizeProvider {
         return null;
     }
 
-    public String getUser(String accessToken){
+    public UserDTO getUser(String accessToken){
         OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url("https://api.github.com/user?access_token="+accessToken)
@@ -52,8 +52,8 @@ public class AuthorizeProvider {
                     String string = response.body().string();
                     UserDTO userDTO = JSON.parseObject(string, UserDTO.class);
 
-                    System.out.println(userDTO.getId());
-                    return string;
+                    System.out.println(userDTO.toString());
+                    return userDTO;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

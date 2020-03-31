@@ -2,16 +2,19 @@ package com.example.springbootdemo.product.Controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
+import com.example.springbootdemo.product.dto.UserDTO;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
 import com.sun.javafx.util.Logging;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Logger;
 
 @Controller
@@ -20,6 +23,14 @@ public class IndexController {
     @Autowired
     AuthorizeProvider authorizeProvider;
 
+    //引入配置文件参数
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.redirect.uri}")
+    private String redictUri;
+    @Value("${github.client.secret}")
+    private String clientSecret;
+
     @GetMapping("/")
     public String index(){
 
@@ -27,18 +38,30 @@ public class IndexController {
         return  "index";//找到resources/templates/hello.html
     }
 
+
     @GetMapping("/callback")
-    public String getAuthorize(@RequestParam(name = "code")String code,@RequestParam("state")String state){
+    public String callback(@RequestParam(name = "code")String code, @RequestParam("state")String state,
+                           HttpServletRequest httpServletRequest){
         System.out.println(code);
         AuthorizeDTO authorizeDTO = new AuthorizeDTO();
-        authorizeDTO.setClient_id("9bed93dab6f7fe0d264f");
-        authorizeDTO.setRedirect_uri("http://localhost:8887/callback");
+        authorizeDTO.setClient_id(clientId);
+        authorizeDTO.setRedirect_uri(redictUri);
         authorizeDTO.setState(state);
         authorizeDTO.setCode(code);
-        authorizeDTO.setClient_secret("546cfe080d802248d92edd33c44f900a57f46b7d");
+        authorizeDTO.setClient_secret(clientSecret);
         String accessToken = authorizeProvider.getAccessToken(authorizeDTO);
-        authorizeProvider.getUser(accessToken);
-        return "index";
+        UserDTO user = authorizeProvider.getUser(accessToken);
+        //登录成功写cookie 和session
+        if(user!=null){
+            httpServletRequest.getSession().setAttribute("user",user);
+            return "redirect:/";
+        }else{
+            //登录失败，重新登录
+            return "redirect:/";
+        }
+
+
+
     }
 
 
