@@ -2,7 +2,7 @@ package com.example.springbootdemo.product.dto;
 
 public class UserDTO {
     private String id;
-    private  String name;
+    private String name;
     private String bio;
 
     public String getId() {

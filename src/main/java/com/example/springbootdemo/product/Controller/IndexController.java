@@ -3,6 +3,8 @@ package com.example.springbootdemo.product.Controller;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
 import com.example.springbootdemo.product.dto.UserDTO;
+import com.example.springbootdemo.product.mapper.UserMapper;
+import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
 import com.sun.javafx.util.Logging;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Controller
@@ -31,6 +34,9 @@ public class IndexController {
     @Value("${github.client.secret}")
     private String clientSecret;
 
+    @Autowired
+    UserMapper userMapper;
+
     @GetMapping("/")
     public String index(){
 
@@ -40,7 +46,7 @@ public class IndexController {
 
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name = "code")String code, @RequestParam("state")String state,
+    public String callback(@RequestParam(name = "code") String code, @RequestParam("state") String state,
                            HttpServletRequest httpServletRequest){
         System.out.println(code);
         AuthorizeDTO authorizeDTO = new AuthorizeDTO();
@@ -50,10 +56,18 @@ public class IndexController {
         authorizeDTO.setCode(code);
         authorizeDTO.setClient_secret(clientSecret);
         String accessToken = authorizeProvider.getAccessToken(authorizeDTO);
-        UserDTO user = authorizeProvider.getUser(accessToken);
+        UserDTO githubUser = authorizeProvider.getUser(accessToken);
         //登录成功写cookie 和session
-        if(user!=null){
-            httpServletRequest.getSession().setAttribute("user",user);
+        if(githubUser!=null){
+            User user = new User();
+            user.setAccountId(githubUser.getId());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
+            user.setName(githubUser.getName());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(System.currentTimeMillis());
+            userMapper.insert(user);
+            httpServletRequest.getSession().setAttribute("user",githubUser);
             return "redirect:/";
         }else{
             //登录失败，重新登录

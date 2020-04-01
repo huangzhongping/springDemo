@@ -48,17 +48,15 @@ public class AuthorizeProvider {
                     .url("https://api.github.com/user?access_token="+accessToken)
                     .build();
             try (Response response = client.newCall(request).execute()) {
-                try {
+
                     String string = response.body().string();
                     UserDTO userDTO = JSON.parseObject(string, UserDTO.class);
 
                     System.out.println(userDTO.toString());
                     return userDTO;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            } catch (IOException e) {
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         return null;
