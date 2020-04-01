@@ -53,7 +53,13 @@
             <scope>compile</scope>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!--//阿里云搭建了一个国内镜像http://maven.aliyun.com，跑起来速度很快，可以进行配置-->
