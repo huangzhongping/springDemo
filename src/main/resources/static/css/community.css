@@ -1,0 +1,19 @@
+body{
+    background-color: #efefef;
+}
+.main{
+    margin: 20px 30px;
+    background-color:white;
+
+}
+.btn-publish{
+    float: right;
+    margin-bottom: 20px;
+}
+.padding{
+    padding-top: 20px;
+}
+.desc{
+    padding: 0px 20px;
+    line-height: 32px;
+}
