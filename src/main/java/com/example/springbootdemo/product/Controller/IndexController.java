@@ -11,12 +11,15 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -38,16 +41,26 @@ public class IndexController {
     UserMapper userMapper;
 
     @GetMapping("/")
-    public String index(){
-
+    public String index(HttpServletRequest httpServletRequest) {
+        if( null!=httpServletRequest.getCookies()) {
+            Cookie[] cookies = httpServletRequest.getCookies();
+            for (int i = 0; i < cookies.length; i++) {
+                String name = cookies[i].getName();
+                if (name.equals("token")) {
+                    User user = userMapper.selectToken(cookies[i].getValue());
+                    httpServletRequest.getSession().setAttribute("user", user);
+                }
+            }
+        }
         //将获取到的值赋值给model
-        return  "index";//找到resources/templates/hello.html
+        return "index";//找到resources/templates/hello.html
     }
 
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code, @RequestParam("state") String state,
-                           HttpServletRequest httpServletRequest){
+                           HttpServletRequest httpServletRequest,
+                           HttpServletResponse httpServletResponse) {
         System.out.println(code);
         AuthorizeDTO authorizeDTO = new AuthorizeDTO();
         authorizeDTO.setClient_id(clientId);
@@ -57,8 +70,8 @@ public class IndexController {
         authorizeDTO.setClient_secret(clientSecret);
         String accessToken = authorizeProvider.getAccessToken(authorizeDTO);
         UserDTO githubUser = authorizeProvider.getUser(accessToken);
-        //登录成功写cookie 和session
-        if(githubUser!=null){
+        //登录成功
+        if (githubUser != null) {
             User user = new User();
             user.setAccountId(githubUser.getId());
             String token = UUID.randomUUID().toString();
@@ -67,13 +80,15 @@ public class IndexController {
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(System.currentTimeMillis());
             userMapper.insert(user);
-            httpServletRequest.getSession().setAttribute("user",githubUser);
+            //写cookie
+            httpServletResponse.addCookie(new Cookie("token",token));
+//          获取session
+//          httpServletRequest.getSession().setAttribute("user", githubUser);
             return "redirect:/";
-        }else{
+        } else {
             //登录失败，重新登录
             return "redirect:/";
         }
-
 
 
     }

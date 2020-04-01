@@ -15,11 +15,14 @@
 [Springboot Mybatis](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 
 [spring boot 文档](https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/html/)
+
+[数据库管理工具flyway](https://flywaydb.org/getstarted/)
+更新版本命令：mvn flyway:migrate
 ## 工具
 
 [visual paradign UML画图工具](https://www.visual-paradigm.com/cn/download/community.jsp?platform=macosx)
 
-##mac idea 快捷键
+## mac idea 快捷键
 
 抽取参数：command+option+V
 
