@@ -18,6 +18,8 @@
 
 [数据库管理工具flyway](https://flywaydb.org/getstarted/)
 更新版本命令：mvn flyway:migrate
+
+[Lombok 实体注入](https://projectlombok.org/)
 ## 工具
 
 [visual paradign UML画图工具](https://www.visual-paradigm.com/cn/download/community.jsp?platform=macosx)

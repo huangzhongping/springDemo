@@ -5,6 +5,7 @@ import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.User;
 import org.h2.util.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,13 @@ public class PublishController {
     private UserMapper userMapper;
 
     @GetMapping("/publish")
-    public String publish(){
+    public String publish( Model model,
+                           HttpServletRequest httpServletRequest){
+        User user = getUser(httpServletRequest);
+        if(user==null){
+            model.addAttribute("error","用户未登录");
+        }
+
         return  "publish";
     }
     @PostMapping("/publish")
@@ -50,6 +57,25 @@ public class PublishController {
             model.addAttribute("error","tag不能为空");
             return  "publish";
         }
+        User user = getUser(httpServletRequest);
+        if(user==null){
+            model.addAttribute("error","用户未登录");
+            return  "publish";
+        }
+        Question question = new Question();
+        question.setTitle(title);
+        question.setDesc(description);
+        question.setTag(tag);
+        question.setCreator(user.getAccount_id());
+        question.setGmtCreate(System.currentTimeMillis());
+        question.setGmtModified(question.getGmtCreate());
+        questionMapper.add(question);
+
+        return  "redirect:/";
+    }
+
+    @Nullable
+    private User getUser(HttpServletRequest httpServletRequest) {
         User user=null;
 
         if( null!=httpServletRequest.getCookies()) {
@@ -64,19 +90,6 @@ public class PublishController {
 
 
         }
-        if(user==null){
-            model.addAttribute("error","用户未登录");
-            return  "publish";
-        }
-        Question question = new Question();
-        question.setTitle(title);
-        question.setDesc(description);
-        question.setTag(tag);
-        question.setUserId(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtCreate(question.getGmtCreate());
-        questionMapper.add(question);
-
-        return  "redirect:/";
+        return user;
     }
 }

@@ -7,6 +7,7 @@ body{
 
 }
 .btn-publish{
+    text-align: right;
     float: right;
     margin-bottom: 20px;
 }

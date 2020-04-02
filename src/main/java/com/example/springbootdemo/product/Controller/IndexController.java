@@ -1,19 +1,13 @@
 package com.example.springbootdemo.product.Controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
 import com.example.springbootdemo.product.dto.UserDTO;
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
-import com.sun.javafx.util.Logging;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @Controller
 public class IndexController {
@@ -73,12 +66,13 @@ public class IndexController {
         //登录成功
         if (githubUser != null) {
             User user = new User();
-            user.setAccountId(githubUser.getId());
+            user.setAccount_id(githubUser.getId());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(System.currentTimeMillis());
+            user.setAvatar_url(githubUser.getAvatar_url());
             userMapper.insert(user);
             //写cookie
             httpServletResponse.addCookie(new Cookie("token",token));
