@@ -1,19 +1,23 @@
 package com.example.springbootdemo.product.Controller;
 
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
+import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.dto.UserDTO;
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
+import com.example.springbootdemo.product.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -33,8 +37,11 @@ public class IndexController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    private QuestionService questionService;
+
     @GetMapping("/")
-    public String index(HttpServletRequest httpServletRequest) {
+    public String index(HttpServletRequest httpServletRequest, Model model) {
         if( null!=httpServletRequest.getCookies()) {
             Cookie[] cookies = httpServletRequest.getCookies();
             for (int i = 0; i < cookies.length; i++) {
@@ -45,6 +52,8 @@ public class IndexController {
                 }
             }
         }
+        List<QuestionDto> dtoList = questionService.getList();
+        model.addAttribute("questions",dtoList);
         //将获取到的值赋值给model
         return "index";//找到resources/templates/hello.html
     }
@@ -72,7 +81,7 @@ public class IndexController {
             user.setName(githubUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(System.currentTimeMillis());
-            user.setAvatar_url(githubUser.getAvatar_url());
+            user.setAvatarUrl(githubUser.getAvatar_url());
             userMapper.insert(user);
             //写cookie
             httpServletResponse.addCookie(new Cookie("token",token));

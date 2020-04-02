@@ -4,6 +4,7 @@ body{
 .main{
     margin: 20px 30px;
     background-color:white;
+    padding-bottom: 30px;
 
 }
 .btn-publish{
@@ -18,3 +19,5 @@ body{
     padding: 0px 20px;
     line-height: 32px;
 }
+
+

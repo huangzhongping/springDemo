@@ -20,6 +20,8 @@
 更新版本命令：mvn flyway:migrate
 
 [Lombok 实体注入](https://projectlombok.org/)
+
+[thymeleaf](https://www.thymeleaf.org/)
 ## 工具
 
 [visual paradign UML画图工具](https://www.visual-paradigm.com/cn/download/community.jsp?platform=macosx)
