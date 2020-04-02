@@ -1,6 +1,7 @@
 package com.example.springbootdemo.product.Controller;
 
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
+import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.dto.UserDTO;
 import com.example.springbootdemo.product.mapper.UserMapper;
@@ -41,7 +42,12 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest httpServletRequest, Model model) {
+    public String index(HttpServletRequest httpServletRequest, Model model,
+                        @RequestParam(name = "page",defaultValue = "1")int page,@RequestParam(name = "size",defaultValue = "5")int size
+                        ) {
+
+
+
         if( null!=httpServletRequest.getCookies()) {
             Cookie[] cookies = httpServletRequest.getCookies();
             for (int i = 0; i < cookies.length; i++) {
@@ -52,8 +58,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDto> dtoList = questionService.getList();
-        model.addAttribute("questions",dtoList);
+        PagetationDTO pagetationDTO = questionService.getList(page,size);
+        model.addAttribute("pagetation",pagetationDTO);
         //将获取到的值赋值给model
         return "index";//找到resources/templates/hello.html
     }
@@ -75,13 +81,13 @@ public class IndexController {
         //登录成功
         if (githubUser != null) {
             User user = new User();
-            user.setAccount_id(githubUser.getId());
+            user.setAccountId(githubUser.getId());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(System.currentTimeMillis());
-            user.setAvatarUrl(githubUser.getAvatar_url());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userMapper.insert(user);
             //写cookie
             httpServletResponse.addCookie(new Cookie("token",token));

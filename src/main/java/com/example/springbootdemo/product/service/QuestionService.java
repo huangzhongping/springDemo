@@ -1,5 +1,6 @@
 package com.example.springbootdemo.product.service;
 
+import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.mapper.QuestionMapper;
 import com.example.springbootdemo.product.mapper.UserMapper;
@@ -22,8 +23,10 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<QuestionDto> getList() {
-        List<Question> listQuestion = questionMapper.list();
+    public PagetationDTO getList(int page, int size) {
+        PagetationDTO pagetationDTO = new PagetationDTO();
+        Integer offset =( page-1)*size;
+        List<Question> listQuestion = questionMapper.list(offset,size);
         List<QuestionDto> questionDtoList = new ArrayList<>();
         for (Question question : listQuestion) {
             //将question数据复制后到questionDtoList
@@ -33,6 +36,10 @@ public class QuestionService {
             questionDto.setUser(user);
             questionDtoList.add(questionDto);
         }
-        return questionDtoList;
+        Integer total = questionMapper.getCount();
+        pagetationDTO.setQuestions(questionDtoList);
+        pagetationDTO.setPagetation(total,page,size);
+
+        return pagetationDTO;
     }
 }

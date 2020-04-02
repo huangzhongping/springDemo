@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class User {
     private Integer id;
-    private String account_id;
+    private String accountId;
     private String name;
     private String token;
     private Long gmtCreate;
