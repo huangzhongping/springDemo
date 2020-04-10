@@ -16,6 +16,8 @@
 
 [spring boot 文档](https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/html/)
 
+[spring 文档](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#spring-web)
+
 [数据库管理工具flyway](https://flywaydb.org/getstarted/)
 更新版本命令：mvn flyway:migrate
 

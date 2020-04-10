@@ -16,14 +16,20 @@ public class PagetationDTO {
 
     public void setPagetation(Integer total, int page, int size) {
         this.total = total;
+        //获取总页数
         if(total%size==0){
             totalPage = total/size;
         }else{
             totalPage = total/size+1;
         }
         this.page = page;
-        pages.add(page);
+        getPages(page);
+    }
+
+    private void getPages(int page) {
+//        totalPage = 12;
         //最多显示7个
+        pages.add(page);
         for (int i=1;i<=3;i++){
             if(page-i>0){
                 pages.add(0,page-i);
@@ -32,5 +38,11 @@ public class PagetationDTO {
                 pages.add(page+i);
             }
         }
+    }
+
+    public static void main(String[] arg0){
+        PagetationDTO pagetationDTO = new PagetationDTO();
+        pagetationDTO.getPages(5);
+        System.out.println(pagetationDTO.pages);
     }
 }

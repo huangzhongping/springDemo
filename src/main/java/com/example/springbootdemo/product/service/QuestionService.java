@@ -42,4 +42,23 @@ public class QuestionService {
 
         return pagetationDTO;
     }
+
+    public PagetationDTO getList(Integer id, int page, int size) {
+        PagetationDTO pagetationDTO = new PagetationDTO();
+        Integer offset =( page-1)*size;
+        List<Question> listQuestion = questionMapper.listById(id,offset,size);
+        List<QuestionDto> questionDtoList = new ArrayList<>();
+        for (Question question : listQuestion) {
+            //将question数据复制后到questionDtoList
+            QuestionDto questionDto = new QuestionDto();
+            BeanUtils.copyProperties(question,questionDto);
+            User user = userMapper.selectId(question.getCreator());
+            questionDto.setUser(user);
+            questionDtoList.add(questionDto);
+        }
+        Integer total = questionMapper.getCountById(id);
+        pagetationDTO.setQuestions(questionDtoList);
+        pagetationDTO.setPagetation(total,page,size);
+        return pagetationDTO;
+    }
 }

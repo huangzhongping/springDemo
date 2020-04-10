@@ -2,7 +2,6 @@ package com.example.springbootdemo.product.Controller;
 
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
 import com.example.springbootdemo.product.dto.PagetationDTO;
-import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.dto.UserDTO;
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
@@ -42,22 +41,9 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest httpServletRequest, Model model,
+    public String index( Model model,
                         @RequestParam(name = "page",defaultValue = "1")int page,@RequestParam(name = "size",defaultValue = "5")int size
                         ) {
-
-
-
-        if( null!=httpServletRequest.getCookies()) {
-            Cookie[] cookies = httpServletRequest.getCookies();
-            for (int i = 0; i < cookies.length; i++) {
-                String name = cookies[i].getName();
-                if (name.equals("token")) {
-                    User user = userMapper.selectToken(cookies[i].getValue());
-                    httpServletRequest.getSession().setAttribute("user", user);
-                }
-            }
-        }
         PagetationDTO pagetationDTO = questionService.getList(page,size);
         model.addAttribute("pagetation",pagetationDTO);
         //将获取到的值赋值给model
@@ -67,7 +53,6 @@ public class IndexController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code, @RequestParam("state") String state,
-                           HttpServletRequest httpServletRequest,
                            HttpServletResponse httpServletResponse) {
         System.out.println(code);
         AuthorizeDTO authorizeDTO = new AuthorizeDTO();
