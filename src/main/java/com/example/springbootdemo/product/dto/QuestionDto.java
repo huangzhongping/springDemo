@@ -9,9 +9,9 @@ public class QuestionDto {
     private String title;
     private String desc;
     private String tag;
-    private String  commentCount;
-    private String viewCount;
-    private String likeCount;
+    private Integer  commentCount;
+    private Integer viewCount;
+    private Integer likeCount;
     private Integer creator;
     private Long gmtCreate;
     private Long gmtModified;

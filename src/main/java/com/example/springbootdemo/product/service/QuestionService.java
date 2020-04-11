@@ -4,6 +4,7 @@ import com.example.springbootdemo.exception.CustomizeErrorCode;
 import com.example.springbootdemo.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
+import com.example.springbootdemo.product.mapper.QuestionExtMapper;
 import com.example.springbootdemo.product.mapper.QuestionMapper;
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.Question;
@@ -27,6 +28,8 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PagetationDTO getList(int page, int size) {
         PagetationDTO pagetationDTO = new PagetationDTO();
@@ -103,5 +106,11 @@ public class QuestionService {
 
             }
         }
+    }
+    public void setViewCount(String id) {
+        Question record = new Question();
+        record.setId(Integer.parseInt(id));
+        record.setViewCount(1);
+        questionExtMapper.incView(record);
     }
 }
