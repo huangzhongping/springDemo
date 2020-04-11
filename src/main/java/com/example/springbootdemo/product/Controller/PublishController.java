@@ -6,6 +6,7 @@ import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.User;
 
 import com.example.springbootdemo.product.service.QuestionService;
+import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
 
-    @Autowired
-    private QuestionMapper questionMapper;
 
     @Autowired
     private QuestionService questionService;
@@ -55,7 +54,7 @@ public class PublishController {
     public String doPublish(@RequestParam(value = "title",required = false)String title,
                             @RequestParam(value = "description",required = false)String description,
                             @RequestParam(value = "tag",required = false)String tag,
-                            @RequestParam("id")String id,
+                            @RequestParam("id")Integer id,
                             Model model,
                             HttpServletRequest httpServletRequest
                             ){
@@ -85,10 +84,13 @@ public class PublishController {
         question.setTitle(title);
         question.setDesc(description);
         question.setTag(tag);
-        question.setCreator(user.getId());
+        question.setCreator(user.getId().toString());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         question.setId(id);
+        question.setCommentCount(0);
+        question.setLikeCount(0);
+        question.setViewCount(0);
         questionService.createOrUpdate(question);
 
         return  "redirect:/";

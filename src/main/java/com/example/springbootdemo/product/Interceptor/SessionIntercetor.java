@@ -2,6 +2,7 @@ package com.example.springbootdemo.product.Interceptor;
 
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
+import com.example.springbootdemo.product.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 @Service
 public class SessionIntercetor implements HandlerInterceptor {
 
@@ -23,8 +26,15 @@ public class SessionIntercetor implements HandlerInterceptor {
             for (int i = 0; i < cookies.length; i++) {
                 String name = cookies[i].getName();
                 if (name.equals("token")) {
-                    User user = userMapper.selectToken(cookies[i].getValue());
-                    request.getSession().setAttribute("user", user);
+                    UserExample example = new UserExample();
+                    example.createCriteria()
+                            .andTokenEqualTo(cookies[i].getValue());
+                    List<User> users = userMapper.selectByExample(example);
+//                    User user = userMapper.selectToken(cookies[i].getValue());
+                    if(users.size()>0){
+                        request.getSession().setAttribute("user", users.get(0));
+                    }
+
                 }
             }
         }

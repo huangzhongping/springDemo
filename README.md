@@ -42,4 +42,9 @@ gettting/setting:command+N
 
 格式化代码：command+option+L
 
+````
+//mybatis 自动自动生成
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
+````
 
