@@ -6,6 +6,7 @@ import com.example.springbootdemo.product.mapper.QuestionMapper;
 import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.User;
+import org.h2.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,13 @@ public class QuestionService {
         User user = userMapper.selectId(question.getCreator());
         questionDto.setUser(user);
         return questionDto;
+    }
+
+    public void createOrUpdate(Question question) {
+        if(StringUtils.isNullOrEmpty(question.getId())){
+            questionMapper.add(question);
+        }else{
+            questionMapper.update(question);
+        }
     }
 }

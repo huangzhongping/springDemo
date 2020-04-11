@@ -12,7 +12,7 @@ public interface UserMapper {
     @Select("select * from user where id=#{id}")
     User selectId(Integer id);
 
-    @Update("update user set name=#{name},account_id=#{accountId},avatar_url=#{avatarUrl},token=#{token},gmt_modified=#{gmtModified}")
+    @Update("update user set name=#{name},account_id=#{accountId},avatar_url=#{avatarUrl},token=#{token},gmt_modified=#{gmtModified} where account_id=#{accountId}")
     void updateUser(User user);
 
     @Select("select * from user where account_id=#{id}")

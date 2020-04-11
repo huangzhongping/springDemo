@@ -46,7 +46,7 @@
                 <span th:text="${question.desc}"></span>
             </div>
             <hr>
-          <a href="" th:if="${session.user!=null&&question.user.id==session.user.id}" ><span class="glyphicon glyphicon-pencil community-menu" >编辑</span></a>
+          <a th:href="@{'/publish/'+${question.id}}" th:if="${session.user!=null&&question.user.id==session.user.id}" ><span class="glyphicon glyphicon-pencil community-menu" >编辑</span></a>
 
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
