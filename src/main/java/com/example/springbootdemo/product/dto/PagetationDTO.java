@@ -1,6 +1,5 @@
 package com.example.springbootdemo.product.dto;
 
-import com.example.springbootdemo.product.model.Question;
 import lombok.Data;
 
 import java.util.ArrayList;

@@ -1,12 +1,10 @@
 package com.example.springbootdemo.product.Controller;
 
 import com.example.springbootdemo.product.dto.QuestionDto;
-import com.example.springbootdemo.product.mapper.QuestionMapper;
+
 import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.User;
-
 import com.example.springbootdemo.product.service.QuestionService;
-import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

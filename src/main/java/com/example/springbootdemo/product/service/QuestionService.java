@@ -1,5 +1,7 @@
 package com.example.springbootdemo.product.service;
 
+import com.example.springbootdemo.exception.CustomizeErrorCode;
+import com.example.springbootdemo.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.mapper.QuestionMapper;
@@ -9,7 +11,6 @@ import com.example.springbootdemo.product.model.QuestionExample;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.model.UserExample;
 import org.apache.ibatis.session.RowBounds;
-import org.h2.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,10 @@ public class QuestionService {
     public QuestionDto getById(String id) {
 
        Question question =  questionMapper.selectByPrimaryKey(Integer.parseInt(id));
+
+       if(question==null){
+           throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
+       }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question,questionDto);
         User user = userMapper.selectByPrimaryKey(Integer.parseInt(question.getCreator()));
@@ -92,7 +97,11 @@ public class QuestionService {
         }else{
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(question, example);
+            int i = questionMapper.updateByExampleSelective(question, example);
+            if(i==1){
+                    throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
+
+            }
         }
     }
 }
