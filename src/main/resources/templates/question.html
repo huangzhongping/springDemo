@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>问额详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script src="/js/jquery.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+
+</head>
+<body>
+<style>
+    .media-object{
+        width: 40px;
+        height: 40px;
+    }
+
+    .list-desc{
+        font-size: 12px;
+        font-weight: normal;
+        color: #999;
+    }
+    .main{
+        padding-bottom: 30px;
+    }
+</style>
+<div th:include="navation :: nav"></div>
+<div class="container-fluid main profile">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <div class="media"  style="margin-top: 15px;">
+
+                <div class="media-body" >
+                <h3 class="media-heading" th:text="${question.title}"></h3>
+            </div>
+            </div>
+            <div class="list-desc " style="margin-top: 10px;">
+                作者：<span  th:text="${question.user.name}"></span> |
+                发布时间：<span  th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd')}"></span> |
+                阅读数： <span   th:text="${question.viewCount}"></span></span>
+            </div>
+            <hr>
+            <div>
+                <span th:text="${question.desc}"></span>
+            </div>
+            <hr>
+          <a href="" th:if="${session.user!=null&&question.user.id==session.user.id}" ><span class="glyphicon glyphicon-pencil community-menu" >编辑</span></a>
+
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
+
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <h2><span th:text="${question.id}"></span></h2>
+                <hr>
+                <div class="media"  >
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-circle" th:src="${question.user.avatarUrl}" >
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading" th:text="${question.user.name}"></h5>
+                    </div>
+                </div>
+                <hr>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

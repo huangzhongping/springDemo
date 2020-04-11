@@ -7,6 +7,7 @@ import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
 import com.example.springbootdemo.product.service.QuestionService;
+import com.example.springbootdemo.product.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,8 @@ public class IndexController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String index( Model model,
@@ -70,10 +73,8 @@ public class IndexController {
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(System.currentTimeMillis());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+           userService.createOrUpdateUser(user);
             //写cookie
             httpServletResponse.addCookie(new Cookie("token",token));
 //          获取session
@@ -85,6 +86,16 @@ public class IndexController {
         }
 
 
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest servletRequest,HttpServletResponse httpServletResponse){
+        //清除session
+        servletRequest.getSession().removeAttribute("user");
+        //清除cookie
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        httpServletResponse.addCookie(cookie);
+        return "redirect:/";
     }
 
 

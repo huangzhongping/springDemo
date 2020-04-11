@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Question {
-    private Integer id;
+    private String id;
     private String title;
     private String desc;
     private String tag;

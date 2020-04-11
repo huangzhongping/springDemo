@@ -61,4 +61,13 @@ public class QuestionService {
         pagetationDTO.setPagetation(total,page,size);
         return pagetationDTO;
     }
+
+    public QuestionDto getById(String id) {
+       Question question =  questionMapper.getById(id);
+        QuestionDto questionDto = new QuestionDto();
+        BeanUtils.copyProperties(question,questionDto);
+        User user = userMapper.selectId(question.getCreator());
+        questionDto.setUser(user);
+        return questionDto;
+    }
 }

@@ -1,9 +1,7 @@
 package com.example.springbootdemo.product.mapper;
 
 import com.example.springbootdemo.product.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -13,4 +11,10 @@ public interface UserMapper {
     User selectToken(String token);
     @Select("select * from user where id=#{id}")
     User selectId(Integer id);
+
+    @Update("update user set name=#{name},account_id=#{accountId},avatar_url=#{avatarUrl},token=#{token},gmt_modified=#{gmtModified}")
+    void updateUser(User user);
+
+    @Select("select * from user where account_id=#{id}")
+    User selectAccountId(@Param("id") String id);
 }
