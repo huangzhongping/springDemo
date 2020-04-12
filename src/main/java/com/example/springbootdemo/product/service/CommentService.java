@@ -45,13 +45,13 @@ public class CommentService {
            throw  new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WARN);
        }
 
-       if(comment.getType().equals(CommentTypeEnum.COMMENT)){
+       if(comment.getType()== CommentTypeEnum.COMMENT.getType()){
            //回复评论
            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
            if(dbComment==null) {
                throw new CustomizeException(CustomizeErrorCode.COMMENT_PARAM_NOT_FOUND);
            }
-           commentMapper.insert(dbComment);
+           commentMapper.insert(comment);
        }else{
            //回复问题
            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -69,14 +69,15 @@ public class CommentService {
     /**
      * 通过questionId 获取回复列表
      * @param id
+     * @param queestion
      * @return
      */
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listById(Long id, CommentTypeEnum queestion) {
         //1.通过问题id和提问类型找到集合
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUEESTION.getType());
+                .andTypeEqualTo(queestion.getType());
         //按照创建时间倒序
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
@@ -84,7 +85,7 @@ public class CommentService {
         //2.找到comments里面的user set去重
         Set<Long> usersets = comments.stream().map(item -> item.getCommentor()).collect(Collectors.toSet());
         if(usersets.size()==0){
-            return  new ArrayList<>();
+            return  new ArrayList<CommentDTO>();
         }
         List<Long> userIds = new ArrayList<>();
         userIds.addAll(usersets);

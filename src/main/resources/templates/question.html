@@ -56,21 +56,48 @@
                 <h4><span th:text="${comments.size()}"></span>个回复</h4>
                 <hr>
                 <div th:each="comment : ${comments}">
-                <div class="media comment-item">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading" th:text="${comment.user.name}"></h5>
-                        <span th:text="${comment.content}"></span>
-                        <div><span class="glyphicon glyphicon-thumbs-up icon"></span> <span class="glyphicon glyphicon-comment icon"></span>
-                            <span class="full-right" th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
+                    <div class="media comment-item">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
+                            </a>
                         </div>
-
+                        <div class="media-body">
+                            <h5 class="media-heading" th:text="${comment.user.name}"></h5>
+                            <span th:text="${comment.content}"></span>
+                            <div><span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span class="glyphicon glyphicon-comment icon " onclick="collapse(this)"
+                                      th:id="'collapse-'+${comment.id}" th:data-id="${comment.id}"></span>
+                                <span class="full-right"
+                                      th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
+                            </div>
+                            <!--二级回复-->
+                            <div class="panel-collapse collapse comment-second" th:id="'comment-'+${comment.id}">
+                                <div th:each="comment : ${comments}">
+                                    <div class="media comment-item">
+                                        <div class="media-left">
+                                            <a href="#">
+                                                <img class="media-object img-rounded"
+                                                     th:src="${comment.user.avatarUrl}">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="media-heading" th:text="${comment.user.name}"></h5>
+                                            <span th:text="${comment.content}"></span>
+                                            <div>
+                                                <span class="full-right"
+                                                      th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" placeholder="回复评论。。。。" th:id="'content-'+${comment.id}">
+                                <div class="text-right margin-sp">
+                                    <button type="button" class="btn btn-success " th:data-id="${comment.id}" onclick="replyClick(this)">回复</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
 
@@ -88,31 +115,33 @@
                 <input type="hidden" id="question-id" th:value="${question.id}"/>
                 <textarea class="form-control community-text-area" id="comment-content" rows="6"></textarea>
 
-                <button type="button" class="btn btn-success btn-community" id="btn" onclick="postClick()">回复</button>
+                <button type="button" class="btn btn-success btn-community" id="btn" onclick="postClick()">回复
+                </button>
             </div>
 
-        </div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
-
-            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                <h2><span th:text="${question.id}"></span></h2>
-                <hr>
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading" th:text="${question.user.name}"></h5>
-                    </div>
-                </div>
-                <hr>
-
-            </div>
         </div>
     </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
 
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span th:text="${question.id}"></span></h2>
+            <hr>
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading" th:text="${question.user.name}"></h5>
+                </div>
+            </div>
+            <hr>
+
+        </div>
+    </div>
+</div>
+</div>
 
 </body>
 </html>

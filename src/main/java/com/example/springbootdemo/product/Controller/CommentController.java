@@ -1,5 +1,7 @@
 package com.example.springbootdemo.product.Controller;
 
+import com.example.springbootdemo.product.dto.CommentDTO;
+import com.example.springbootdemo.product.enums.CommentTypeEnum;
 import com.example.springbootdemo.product.exception.CustomizeErrorCode;
 import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.CommentCreateDTO;
@@ -10,12 +12,10 @@ import com.example.springbootdemo.product.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -44,5 +44,18 @@ public class CommentController {
         comment.setParentId(commentCreateDTO.getParent_id());
         commentService.insert(comment);
         return new ResultDTO(CustomizeErrorCode.RESULT_SUCCESS);
+    }
+
+    /**
+     * 查看二级评论
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/comment/{id}")
+    public ResultDTO comment(@PathVariable("id")Long id){
+        List<CommentDTO> comments = commentService.listById(id, CommentTypeEnum.COMMENT);
+        return  new ResultDTO(CustomizeErrorCode.RESULT_SUCCESS,comments);
+
     }
 }

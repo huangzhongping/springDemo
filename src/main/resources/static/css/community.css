@@ -57,3 +57,17 @@ body{
 .media-body .icon:hover{
     color: #2aabd2;
 }
+
+.btn-click{
+    color: #2aabd2;
+}
+
+.comment-second{
+    margin: 10px 0;
+    border: 1px solid #ededed;
+    padding: 15px;
+    border-radius: 4px;
+}
+.margin-sp{
+    margin-top: 10px;
+}
