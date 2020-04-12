@@ -1,6 +1,5 @@
 package com.example.springbootdemo.product.dto;
 
-import com.example.springbootdemo.exception.ICustomizeErrorCode;
 import lombok.Data;
 
 @Data

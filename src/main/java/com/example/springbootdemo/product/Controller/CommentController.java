@@ -1,10 +1,9 @@
 package com.example.springbootdemo.product.Controller;
 
-import com.example.springbootdemo.exception.CustomizeErrorCode;
-import com.example.springbootdemo.exception.CustomizeException;
+import com.example.springbootdemo.product.exception.CustomizeErrorCode;
+import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.CommentDTO;
 import com.example.springbootdemo.product.dto.ResultDTO;
-import com.example.springbootdemo.product.mapper.CommentMapper;
 import com.example.springbootdemo.product.model.Comment;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.service.CommentService;

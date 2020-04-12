@@ -1,8 +1,8 @@
 package com.example.springbootdemo.product.advice;
 
 import com.alibaba.fastjson.JSON;
-import com.example.springbootdemo.exception.CustomizeErrorCode;
-import com.example.springbootdemo.exception.CustomizeException;
+import com.example.springbootdemo.product.exception.CustomizeErrorCode;
+import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.ResultDTO;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

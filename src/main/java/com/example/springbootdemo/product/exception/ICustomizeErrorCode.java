@@ -1,4 +1,4 @@
-package com.example.springbootdemo.exception;
+package com.example.springbootdemo.product.exception;
 
 public interface ICustomizeErrorCode {
     String getMessage();

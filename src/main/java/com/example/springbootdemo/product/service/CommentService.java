@@ -1,9 +1,8 @@
 package com.example.springbootdemo.product.service;
 
-import com.example.springbootdemo.enums.CommentTypeEnum;
-import com.example.springbootdemo.exception.CustomizeErrorCode;
-import com.example.springbootdemo.exception.CustomizeException;
-import com.example.springbootdemo.product.dto.CommentDTO;
+import com.example.springbootdemo.product.enums.CommentTypeEnum;
+import com.example.springbootdemo.product.exception.CustomizeErrorCode;
+import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.mapper.CommentMapper;
 import com.example.springbootdemo.product.mapper.QuestionExtMapper;
 import com.example.springbootdemo.product.mapper.QuestionMapper;
@@ -12,8 +11,6 @@ import com.example.springbootdemo.product.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.beans.Transient;
 
 @Service
 public class CommentService {

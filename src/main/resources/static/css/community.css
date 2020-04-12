@@ -29,4 +29,14 @@ body{
 .jumbotron{
     margin: 50px;
 }
+.media-body{
+    padding-top: 10px;
+}
+.btn-community{
+    float: right;
+    margin-bottom: 10px;
+}
+.community-text-area{
+    margin: 10px 0;
+}
 

@@ -1,4 +1,4 @@
-package com.example.springbootdemo.enums;
+package com.example.springbootdemo.product.enums;
 
 public enum CommentTypeEnum {
     QUEESTION(1),

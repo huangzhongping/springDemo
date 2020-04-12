@@ -1,7 +1,7 @@
 package com.example.springbootdemo.product.service;
 
-import com.example.springbootdemo.exception.CustomizeErrorCode;
-import com.example.springbootdemo.exception.CustomizeException;
+import com.example.springbootdemo.product.exception.CustomizeErrorCode;
+import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.mapper.QuestionExtMapper;
