@@ -26,6 +26,17 @@
         padding-bottom: 30px;
     }
 </style>
+<script type="application/javascript">
+    window.onload = function (ev) {
+       var closeable =  window.localStorage.getItem("closeable");
+        if(closeable=="true"){
+            window.close();
+            window.localStorage.removeItem("closeable");
+        }
+
+    }
+
+</script>
 <div th:include="navation :: nav"></div>
 <div class="container-fluid main">
     <div class="row">
