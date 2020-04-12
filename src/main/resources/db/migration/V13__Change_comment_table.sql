@@ -1,0 +1,1 @@
+alter table COMMENT alter column ID bigint default NEXT VALUE FOR "SYSTEM_SEQUENCE_976504CA_BC22_4143_BFEB_A67C21A29917" auto_increment;

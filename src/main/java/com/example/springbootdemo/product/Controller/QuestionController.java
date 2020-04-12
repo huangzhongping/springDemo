@@ -16,9 +16,9 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable("id")String id,
+    public String question(@PathVariable("id")Long id,
                            Model model){
-        if(StringUtils.isNullOrEmpty(id)){
+        if(id==null){
             return "index";
         }
        QuestionDto questionDto =  questionService.getById(id);

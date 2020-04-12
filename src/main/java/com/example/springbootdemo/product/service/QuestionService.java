@@ -42,7 +42,7 @@ public class QuestionService {
             QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question,questionDto);
             UserExample example = new UserExample();
-            example.createCriteria().andIdEqualTo(Integer.parseInt(question.getCreator()));
+            example.createCriteria().andIdEqualTo(Long.parseLong(question.getCreator()));
             List<User> users = userMapper.selectByExample(example);
 //            User user = userMapper.selectId(question.getCreator());
             if(users.size()>0)
@@ -56,7 +56,7 @@ public class QuestionService {
         return pagetationDTO;
     }
 
-    public PagetationDTO getList(Integer id, int page, int size) {
+    public PagetationDTO getList(Long id, int page, int size) {
         PagetationDTO pagetationDTO = new PagetationDTO();
         Integer offset =( page-1)*size;
         QuestionExample example = new QuestionExample();
@@ -68,7 +68,7 @@ public class QuestionService {
             //将question数据复制后到questionDtoList
             QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question,questionDto);
-            User user = userMapper.selectByPrimaryKey(Integer.parseInt(question.getCreator()));
+            User user = userMapper.selectByPrimaryKey(Long.parseLong(question.getCreator()));
             questionDto.setUser(user);
             questionDtoList.add(questionDto);
         }
@@ -80,37 +80,38 @@ public class QuestionService {
         return pagetationDTO;
     }
 
-    public QuestionDto getById(String id) {
+    public QuestionDto getById(Long id) {
 
-       Question question =  questionMapper.selectByPrimaryKey(Integer.parseInt(id));
+       Question question =  questionMapper.selectByPrimaryKey(id);
 
        if(question==null){
            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
        }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question,questionDto);
-        User user = userMapper.selectByPrimaryKey(Integer.parseInt(question.getCreator()));
+        User user = userMapper.selectByPrimaryKey(Long.parseLong(question.getCreator()));
         questionDto.setUser(user);
         return questionDto;
     }
 
     public void createOrUpdate(Question question) {
         if(question.getId()==null){
+            question.setViewCount(0L);
             questionMapper.insert(question);
         }else{
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
             int i = questionMapper.updateByExampleSelective(question, example);
-            if(i==1){
+            if(i==0){
                     throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
 
             }
         }
     }
-    public void setViewCount(String id) {
+    public void setViewCount(Long id) {
         Question record = new Question();
-        record.setId(Integer.parseInt(id));
-        record.setViewCount(1);
+        record.setId(id);
+        record.setViewCount(1L);
         questionExtMapper.incView(record);
     }
 }
