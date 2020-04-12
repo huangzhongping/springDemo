@@ -52,8 +52,31 @@
             <a th:href="@{'/publish/'+${question.id}}" th:if="${session.user!=null&&question.user.id==session.user.id}"><span
                     class="glyphicon glyphicon-pencil community-menu">编辑</span></a>
             <hr>
+
+            <div>
+                <h4><span th:text="${comments.size()}"></span>个回复</h4>
+                <hr>
+                <div th:each="comment : ${comments}">
+                <div class="media comment-item">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading" th:text="${comment.user.name}"></h5>
+                        <span th:text="${comment.content}"></span>
+                        <div><span class="glyphicon glyphicon-thumbs-up icon"></span> <span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="full-right" th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+
             <div id="comment-section">
-                <div class="media">
+                <div class="media comment-padding">
                     <div class="media-left">
                         <a href="#">
                             <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">

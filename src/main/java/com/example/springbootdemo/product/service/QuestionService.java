@@ -1,5 +1,6 @@
 package com.example.springbootdemo.product.service;
 
+import com.example.springbootdemo.product.dto.CommentDTO;
 import com.example.springbootdemo.product.exception.CustomizeErrorCode;
 import com.example.springbootdemo.product.exception.CustomizeException;
 import com.example.springbootdemo.product.dto.PagetationDTO;
@@ -114,4 +115,7 @@ public class QuestionService {
         record.setViewCount(1L);
         questionExtMapper.incView(record);
     }
+
+
+
 }

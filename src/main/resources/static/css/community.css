@@ -39,4 +39,21 @@ body{
 .community-text-area{
     margin: 10px 0;
 }
-
+.comment-item{
+    border-bottom: 1px solid #ededed;
+    padding: 10px 0;
+}
+.comment-padding{
+    padding: 10px 0;
+}
+.full-right{
+    float: right;
+}
+.media-body .icon{
+    margin-right: 5px;
+    cursor: pointer;
+    color: #8c8c8c;
+}
+.media-body .icon:hover{
+    color: #2aabd2;
+}
