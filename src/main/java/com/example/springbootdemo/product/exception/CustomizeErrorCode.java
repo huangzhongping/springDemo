@@ -11,6 +11,7 @@ public enum  CustomizeErrorCode implements ICustomizeErrorCode{
     TARGET_PARAM_NOT_FOUND(2004,"评论的问题不存在了。请换一个试试"),
     TYPE_PARAM_WARN(2005,"评论类型错误或不存在"),
     COMMENT_PARAM_NOT_FOUND(2006,"你找的评论不在了，要不换一个试试～"),
+    COMMENT_CONTENT_EMPTY(2006,"输入内容不能为null"),
 
     ;
     @Override

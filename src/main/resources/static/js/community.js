@@ -2,7 +2,11 @@ function postClick() {
    var questionId =  $("#question-id").val();
 
    var content =  $("#comment-content").val();
-    console.log("questionId:"+questionId+"content:"+content);
+
+   if(!content){
+       alert("请输入内容")
+       return;
+   }
     $.ajax({
         type: "POST",
         url: "/comment",
@@ -16,7 +20,8 @@ function postClick() {
         success: function (res) {
             console.log(res)
             if(res.code==200){
-                $("#comment-section").hide()
+                //重新加载
+                window.location.reload();
             }else if(res.code==2003){
                     var isAssible = confirm(res.message);
                     if(isAssible){

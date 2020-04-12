@@ -7,6 +7,7 @@ import com.example.springbootdemo.product.dto.ResultDTO;
 import com.example.springbootdemo.product.model.Comment;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,9 @@ public class CommentController {
         User user = (User) request.getSession().getAttribute("user");
         if(user==null){
             throw new  CustomizeException(CustomizeErrorCode.USER_NOT);
+        }
+        if(commentCreateDTO==null|| StringUtils.isBlank(commentCreateDTO.getContent())){
+            return new ResultDTO(CustomizeErrorCode.COMMENT_CONTENT_EMPTY);
         }
         Comment comment = new Comment();
         comment.setContent(commentCreateDTO.getContent());
