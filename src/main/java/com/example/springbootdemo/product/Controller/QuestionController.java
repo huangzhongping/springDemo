@@ -3,6 +3,7 @@ package com.example.springbootdemo.product.Controller;
 import com.example.springbootdemo.product.dto.CommentDTO;
 import com.example.springbootdemo.product.dto.QuestionDto;
 import com.example.springbootdemo.product.enums.CommentTypeEnum;
+import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.service.CommentService;
 import com.example.springbootdemo.product.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,14 @@ public class QuestionController {
         }
        QuestionDto questionDto =  questionService.getById(id);
         questionService.setViewCount(id);
+       List<Question> links = questionService.getByLink(questionDto);
         //获取评论列表
         List<CommentDTO> comments = commentService.listById(id, CommentTypeEnum.QUEESTION);
         model.addAttribute("question",questionDto);
         model.addAttribute("comments",comments);
+        model.addAttribute("links",links);
         return  "question";
+
 
     }
 }

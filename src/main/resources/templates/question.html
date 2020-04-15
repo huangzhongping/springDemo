@@ -9,6 +9,7 @@
     <script src="/js/jquery.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
 
 </head>
 <body>
@@ -49,8 +50,14 @@
                 <span th:text="${question.desc}"></span>
             </div>
             <hr>
+            <div>
+                <span th:each="tag : ${question.tag.split(',')}">
+                    <span  class="label label-info" th:text="${tag}"></span>
+                </span>
+            </div>
+            <hr>
             <a th:href="@{'/publish/'+${question.id}}" th:if="${session.user!=null&&question.user.id==session.user.id}"><span
-                    class="glyphicon glyphicon-pencil community-menu">编辑</span></a>
+                    class="glyphicon glyphicon-pencil community-menu edit">编辑</span></a>
 
             <div>
                 <h4><span th:text="${comments.size()}"></span>个回复</h4>
@@ -67,30 +74,30 @@
                             <span th:text="${comment.content}"></span>
                             <div><span class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <span class="glyphicon glyphicon-comment icon " onclick="collapse(this)"
-                                      th:id="'collapse-'+${comment.id}" th:data-id="${comment.id}"></span>
+                                      th:id="'collapse-'+${comment.id}" th:data-id="${comment.id}"> <span class="sub-count" th:text="${comment.commentCount}"></span></span>
                                 <span class="full-right"
                                       th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
                             </div>
                             <!--二级回复-->
                             <div class="panel-collapse collapse comment-second" th:id="'comment-'+${comment.id}">
-                                <div th:each="comment : ${comments}">
-                                    <div class="media comment-item">
-                                        <div class="media-left">
-                                            <a href="#">
-                                                <img class="media-object img-rounded"
-                                                     th:src="${comment.user.avatarUrl}">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="media-heading" th:text="${comment.user.name}"></h5>
-                                            <span th:text="${comment.content}"></span>
-                                            <div>
-                                                <span class="full-right"
-                                                      th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!--<div th:each="comment : ${comments}" >-->
+                                    <!--<div class="media comment-item">-->
+                                        <!--<div class="media-left">-->
+                                            <!--<a href="#">-->
+                                                <!--<img class="media-object img-rounded"-->
+                                                     <!--th:src="${comment.user.avatarUrl}">-->
+                                            <!--</a>-->
+                                        <!--</div>-->
+                                        <!--<div class="media-body">-->
+                                            <!--<h5 class="media-heading" th:text="${comment.user.name}"></h5>-->
+                                            <!--<span th:text="${comment.content}"></span>-->
+                                            <!--<div>-->
+                                                <!--<span class="full-right"-->
+                                                      <!--th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                                 <input type="text" class="form-control" placeholder="回复评论。。。。" th:id="'content-'+${comment.id}">
                                 <div class="text-right margin-sp">
                                     <button type="button" class="btn btn-success " th:data-id="${comment.id}" onclick="replyClick(this)">回复</button>
@@ -120,11 +127,10 @@
             </div>
 
         </div>
-    </div>
-    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 desc">
 
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span th:text="${question.id}"></span></h2>
+            <h3><span >发起人</span></h3>
             <hr>
             <div class="media">
                 <div class="media-left">
@@ -137,11 +143,21 @@
                 </div>
             </div>
             <hr>
+            <h3><span >官方微信</span></h3>
+            <img src="/img/wechat.png" alt="学习spring boot" class="img-rounded wechat-img">
+            <hr>
+            <h3><span >相关问题</span></h3>
+            <ul>
+                <li th:each="link : ${links}">
+                    <a th:href="'/question/'+${link.id}"><span th:text="${link.title}"></span></a>
+                </li>
+            </ul>
 
         </div>
     </div>
+    </div>
 </div>
-</div>
+
 
 </body>
 </html>

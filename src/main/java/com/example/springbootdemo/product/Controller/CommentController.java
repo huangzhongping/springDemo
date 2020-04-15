@@ -42,6 +42,7 @@ public class CommentController {
         comment.setCommentor(user.getId());
         comment.setType(commentCreateDTO.getType());
         comment.setParentId(commentCreateDTO.getParent_id());
+        comment.setCommentCount(0);
         commentService.insert(comment);
         return new ResultDTO(CustomizeErrorCode.RESULT_SUCCESS);
     }

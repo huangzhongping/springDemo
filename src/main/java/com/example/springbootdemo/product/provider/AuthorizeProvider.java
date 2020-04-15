@@ -11,7 +11,7 @@ import java.io.IOException;
 @Component
 public class AuthorizeProvider {
 
-    public String getAccessToken(AuthorizeDTO authorizeDTO){
+    public String getAccessToken(AuthorizeDTO authorizeDTO) {
         MediaType mediaType
                 = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -24,11 +24,11 @@ public class AuthorizeProvider {
         try (Response response = client.newCall(request).execute()) {
 
             String string = response.body().string();
-//            System.out.println(string);
-            String result=null;
-            if(string.contains("&")){
+            //            System.out.println(string);
+            String result = null;
+            if (string.contains("&")) {
                 String[] accessTokenSplit = string.split("&");
-                if(accessTokenSplit.length>0&&accessTokenSplit[0].contains("=")){
+                if (accessTokenSplit.length > 0 && accessTokenSplit[0].contains("=")) {
                     String[] strSplit = accessTokenSplit[0].split("=");
                     result = strSplit[1];
                 }
@@ -42,23 +42,23 @@ public class AuthorizeProvider {
         return null;
     }
 
-    public UserDTO getUser(String accessToken){
+    public UserDTO getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url("https://api.github.com/user?access_token="+accessToken)
-                    .build();
-            try (Response response = client.newCall(request).execute()) {
+        Request request = new Request.Builder()
+                .url("https://api.github.com/user?access_token=" + accessToken)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
 
-                    String string = response.body().string();
-                    UserDTO userDTO = JSON.parseObject(string, UserDTO.class);
+            String string = response.body().string();
+            UserDTO userDTO = JSON.parseObject(string, UserDTO.class);
 
-                    System.out.println(userDTO.toString());
-                    return userDTO;
+            System.out.println(userDTO.toString());
+            return userDTO;
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
 
     }

@@ -12,13 +12,16 @@ import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.QuestionExample;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.model.UserExample;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 主要做数据中间层
@@ -35,7 +38,9 @@ public class QuestionService {
     public PagetationDTO getList(int page, int size) {
         PagetationDTO pagetationDTO = new PagetationDTO();
         Integer offset =( page-1)*size;
-        List<Question> listQuestion = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> listQuestion = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample,new RowBounds(offset,size));
 
         List<QuestionDto> questionDtoList = new ArrayList<>();
         for (Question question : listQuestion) {
@@ -51,7 +56,7 @@ public class QuestionService {
             questionDtoList.add(questionDto);
         }
         Integer total =(int) questionMapper.countByExample(new QuestionExample());
-        pagetationDTO.setQuestions(questionDtoList);
+        pagetationDTO.setData(questionDtoList);
         pagetationDTO.setPagetation(total,page,size);
 
         return pagetationDTO;
@@ -76,7 +81,7 @@ public class QuestionService {
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andIdEqualTo(id);
         Integer total = (int)questionMapper.countByExample(example1);
-        pagetationDTO.setQuestions(questionDtoList);
+        pagetationDTO.setData(questionDtoList);
         pagetationDTO.setPagetation(total,page,size);
         return pagetationDTO;
     }
@@ -105,7 +110,6 @@ public class QuestionService {
             int i = questionMapper.updateByExampleSelective(question, example);
             if(i==0){
                     throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
-
             }
         }
     }
@@ -116,6 +120,21 @@ public class QuestionService {
         questionExtMapper.incView(record);
     }
 
+    /**
+     * 获取相关问题
+     * @return
+     */
+    public List<Question> getByLink(QuestionDto questionDto) {
 
-
+        if(StringUtils.isBlank(questionDto.getTag())){
+            return  new ArrayList<>();
+        }
+        Question tagQueation = new Question();
+        String[] tags = questionDto.getTag().split(",");
+        String join = String.join("|", tags);
+        tagQueation.setTag(join);
+        tagQueation.setId(questionDto.getId());
+        List<Question> questions = questionExtMapper.selectLikeTag(tagQueation);
+        return questions;
+    }
 }

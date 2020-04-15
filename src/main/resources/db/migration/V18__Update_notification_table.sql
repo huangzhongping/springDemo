@@ -1,0 +1,1 @@
+alter table NOTIFICATION alter column RECEIVERID bigint not null;

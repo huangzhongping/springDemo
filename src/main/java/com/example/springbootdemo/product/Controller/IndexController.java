@@ -3,7 +3,6 @@ package com.example.springbootdemo.product.Controller;
 import com.example.springbootdemo.product.dto.AuthorizeDTO;
 import com.example.springbootdemo.product.dto.PagetationDTO;
 import com.example.springbootdemo.product.dto.UserDTO;
-import com.example.springbootdemo.product.mapper.UserMapper;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.provider.AuthorizeProvider;
 import com.example.springbootdemo.product.service.QuestionService;
@@ -33,9 +32,6 @@ public class IndexController {
     private String redictUri;
     @Value("${github.client.secret}")
     private String clientSecret;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     private QuestionService questionService;
@@ -73,7 +69,7 @@ public class IndexController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-           userService.createOrUpdateUser(user);
+            userService.createOrUpdateUser(user);
             //写cookie
             httpServletResponse.addCookie(new Cookie("token",token));
 //          获取session

@@ -29,9 +29,6 @@ body{
 .jumbotron{
     margin: 50px;
 }
-.media-body{
-    padding-top: 10px;
-}
 .btn-community{
     float: right;
     margin-bottom: 10px;
@@ -70,4 +67,24 @@ body{
 }
 .margin-sp{
     margin-top: 10px;
+}
+
+.sub-count{
+    display: inline-block;
+    margin-left: -8px;
+    vertical-align: inherit;
+}
+.edit{
+    margin-bottom: 10px;
+}
+
+.wechat-img{
+    width: 200px;
+    height: 200px;
+}
+ul
+{
+    list-style-type:none;
+    padding:0px;
+    margin:0px;
 }

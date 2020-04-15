@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PagetationDTO {
-    private List<QuestionDto> questions;
+public class PagetationDTO<T> {
+    private List<T> data;
     private Integer page;
     private Integer total;
     private Integer totalPage;
