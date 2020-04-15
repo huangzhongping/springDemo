@@ -52,7 +52,9 @@ public class NotificationService {
             notificationDTO.setTypeName(NotificationStatusEnum.getName(notification.getStatus()));
             notificationDTOS.add(notificationDTO);
         }
-        Integer total =(int) notificationMapper.countByExample(new NotificationExample());
+        NotificationExample example = new NotificationExample();
+        example.createCriteria().andReceiveridEqualTo(id);
+        Integer total =(int) notificationMapper.countByExample(example);
         pagetationDTO.setData(notificationDTOS);
         pagetationDTO.setPagetation(total,page,size);
 
