@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
+    <link rel="stylesheet" href="/css/editormd.min.css" />
     <script src="/js/jquery.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:include="navation :: nav"></div>
@@ -23,11 +25,29 @@
                     <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..."
                            th:value="${title}">
                 </div>
-                <div class="form-group">
+                <div class="form-group" >
                     <label for="description">问题补充:</label>
-                    <textarea class="form-control" rows="10" id="description" name="description"
+                    <div id="editor">
+                    <textarea style="display:none;" class="form-control" rows="10" id="description" name="description"
                               th:text="${description}"></textarea>
+                    </div>
                 </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var editor = editormd("editor", {
+                            width: "100%",
+                            height: 300,
+                            watch:false,
+                            delay:0,
+                            imageUpload:true,
+                            imageUploadURL:"/upload/",
+
+                            placeholder:'请输入问题...',
+                            // markdown: "xxxx",     // dynamic set Markdown text
+                            path : "/js/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
+                        });
+                    });
+                    </script>
 
                 <div class="form-group padding">
                     <label for="tag">添加标签:</label>

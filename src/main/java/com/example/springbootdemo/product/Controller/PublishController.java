@@ -2,16 +2,14 @@ package com.example.springbootdemo.product.Controller;
 
 import com.example.springbootdemo.product.dto.QuestionDto;
 
+import com.example.springbootdemo.product.dto.UploadDTO;
 import com.example.springbootdemo.product.model.Question;
 import com.example.springbootdemo.product.model.User;
 import com.example.springbootdemo.product.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -95,6 +93,17 @@ public class PublishController {
 
         return  "redirect:/";
     }
+
+
+    @ResponseBody
+    @RequestMapping("/upload")
+    public UploadDTO uploadImg(@RequestParam("guid")String url){
+        UploadDTO uploadDTO = new UploadDTO();
+        uploadDTO.setSuccess(1);
+        uploadDTO.setUrl("/images/wechat.png");
+        return  uploadDTO;
+    }
+
 
 
 }
